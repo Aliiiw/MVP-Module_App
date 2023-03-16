@@ -2,15 +2,15 @@ package com.example.mymvpapp.presenter.contract
 
 import com.example.mymvpapp.model.Post
 
-interface IPost {
+interface INewPost {
 
     interface View {
-        fun onSuccess(postList: List<Post>)
+        fun onSuccess(post: String)
         fun onError(message: String)
         fun onFail(message: String)
     }
 
-    interface Presenter{
-        suspend fun getAllPostsRequest()
+    interface Presenter {
+        suspend fun createNewPost(newPost: Post)
     }
 }

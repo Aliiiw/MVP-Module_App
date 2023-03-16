@@ -1,11 +1,11 @@
 package com.example.mymvpapp.presenter.contract
 
-import com.example.mymvpapp.model.PostResponseModel
+import com.example.mymvpapp.model.Post
 
 interface ISinglePost {
 
     interface View {
-        fun onSuccess(singlePost: PostResponseModel)
+        fun onSuccess(singlePost: Post)
         fun onError(message: String)
         fun onFail(message: String)
     }

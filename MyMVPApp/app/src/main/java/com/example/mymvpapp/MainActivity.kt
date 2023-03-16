@@ -7,22 +7,13 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.lifecycleScope
 import com.example.mymvpapp.model.Comment
-import com.example.mymvpapp.model.PostResponseModel
-import com.example.mymvpapp.network.ApiClient
-import com.example.mymvpapp.presenter.contract.IComments
-import com.example.mymvpapp.presenter.contract.ILogin
-import com.example.mymvpapp.presenter.contract.IPost
-import com.example.mymvpapp.presenter.contract.ISinglePost
-import com.example.mymvpapp.presenter.present.CommentPresenter
-import com.example.mymvpapp.presenter.present.LoginPresenter
-import com.example.mymvpapp.presenter.present.PostPresenter
-import com.example.mymvpapp.presenter.present.SinglePostPresenter
+import com.example.mymvpapp.model.Post
+import com.example.mymvpapp.presenter.contract.*
+import com.example.mymvpapp.presenter.present.*
 import com.example.mymvpapp.ui.theme.MyMVPAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -41,7 +32,16 @@ class MainActivity : ComponentActivity() {
                     lifecycleScope.launchWhenCreated {
                         //getAllPostsRequest()
                         //getPostById(postId = "36")
-                        getAllPostComments(postId = 2)
+                        //getAllPostComments(postId = 2)
+
+                        val newPost = Post(
+                            id = 101,
+                            title = "Say hello",
+                            userId = 5,
+                            body = "Hi Aliiiw"
+                        )
+
+                        createNewPost(newPost = newPost)
                     }
 
                 }
@@ -65,10 +65,9 @@ fun Login(username: String, password: String) {
     presenter.login(username = username, password = password)
 }
 
-
 suspend fun getAllPostsRequest() {
     val presenter = PostPresenter(object : IPost.View {
-        override fun onSuccess(postList: List<PostResponseModel>) {
+        override fun onSuccess(postList: List<Post>) {
             postList.forEach { post ->
                 Log.e("2323", post.title)
             }
@@ -91,7 +90,7 @@ suspend fun getAllPostsRequest() {
 suspend fun getPostById(postId: String) {
     val presenter = SinglePostPresenter(object : ISinglePost.View {
 
-        override fun onSuccess(singlePost: PostResponseModel) {
+        override fun onSuccess(singlePost: Post) {
 
             Log.e("2323", singlePost.title)
 
@@ -110,7 +109,6 @@ suspend fun getPostById(postId: String) {
     presenter.getPostById(postId = postId)
 
 }
-
 
 suspend fun getAllPostComments(postId: Int) {
 
@@ -133,5 +131,27 @@ suspend fun getAllPostComments(postId: Int) {
     })
 
     presenter.getAllPostComments(postId = postId)
+
+}
+
+suspend fun createNewPost(newPost: Post) {
+
+    val presenter = NewPostPresenter(object : INewPost.View {
+
+        override fun onSuccess(post: String) {
+            Log.e("2323", post)
+        }
+
+        override fun onError(message: String) {
+            Log.e("2323", message)
+        }
+
+        override fun onFail(message: String) {
+            Log.e("2323", message)
+        }
+
+    })
+
+    presenter.createNewPost(newPost = newPost)
 
 }

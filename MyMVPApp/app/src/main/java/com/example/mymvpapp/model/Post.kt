@@ -1,6 +1,6 @@
 package com.example.mymvpapp.model
 
-data class PostResponseModel(
+data class Post(
     val userId: Int,
     val id: Int,
     val title: String,
