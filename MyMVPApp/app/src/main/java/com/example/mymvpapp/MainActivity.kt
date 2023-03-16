@@ -12,11 +12,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.lifecycleScope
+import com.example.mymvpapp.model.Comment
 import com.example.mymvpapp.model.PostResponseModel
 import com.example.mymvpapp.network.ApiClient
+import com.example.mymvpapp.presenter.contract.IComments
 import com.example.mymvpapp.presenter.contract.ILogin
 import com.example.mymvpapp.presenter.contract.IPost
 import com.example.mymvpapp.presenter.contract.ISinglePost
+import com.example.mymvpapp.presenter.present.CommentPresenter
 import com.example.mymvpapp.presenter.present.LoginPresenter
 import com.example.mymvpapp.presenter.present.PostPresenter
 import com.example.mymvpapp.presenter.present.SinglePostPresenter
@@ -33,11 +36,12 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colors.background
                 ) {
 
-                    Login(username = "username", password = "123")
+                    //Login(username = "username", password = "123")
 
                     lifecycleScope.launchWhenCreated {
                         //getAllPostsRequest()
-                        getPostById(postId = "36")
+                        //getPostById(postId = "36")
+                        getAllPostComments(postId = 2)
                     }
 
                 }
@@ -104,5 +108,30 @@ suspend fun getPostById(postId: String) {
     })
 
     presenter.getPostById(postId = postId)
+
+}
+
+
+suspend fun getAllPostComments(postId: Int) {
+
+    val presenter = CommentPresenter(object : IComments.View {
+
+        override fun onSuccess(commentList: List<Comment>) {
+            commentList.forEach { comment ->
+                Log.e("2323", comment.body)
+            }
+        }
+
+        override fun onError(message: String) {
+            Log.e("2323", message)
+        }
+
+        override fun onFail(message: String) {
+            Log.e("2323", message)
+        }
+
+    })
+
+    presenter.getAllPostComments(postId = postId)
 
 }
