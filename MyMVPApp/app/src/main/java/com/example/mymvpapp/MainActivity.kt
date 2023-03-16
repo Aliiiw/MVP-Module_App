@@ -16,8 +16,10 @@ import com.example.mymvpapp.model.PostResponseModel
 import com.example.mymvpapp.network.ApiClient
 import com.example.mymvpapp.presenter.contract.ILogin
 import com.example.mymvpapp.presenter.contract.IPost
+import com.example.mymvpapp.presenter.contract.ISinglePost
 import com.example.mymvpapp.presenter.present.LoginPresenter
 import com.example.mymvpapp.presenter.present.PostPresenter
+import com.example.mymvpapp.presenter.present.SinglePostPresenter
 import com.example.mymvpapp.ui.theme.MyMVPAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -34,7 +36,8 @@ class MainActivity : ComponentActivity() {
                     Login(username = "username", password = "123")
 
                     lifecycleScope.launchWhenCreated {
-                        getAllPostsRequest()
+                        //getAllPostsRequest()
+                        getPostById(postId = "36")
                     }
 
                 }
@@ -78,5 +81,28 @@ suspend fun getAllPostsRequest() {
     })
 
     presenter.getAllPostsRequest()
+
+}
+
+suspend fun getPostById(postId: String) {
+    val presenter = SinglePostPresenter(object : ISinglePost.View {
+
+        override fun onSuccess(singlePost: PostResponseModel) {
+
+            Log.e("2323", singlePost.title)
+
+        }
+
+        override fun onError(message: String) {
+            Log.e("2323", message)
+        }
+
+        override fun onFail(message: String) {
+            Log.e("2323", message)
+        }
+
+    })
+
+    presenter.getPostById(postId = postId)
 
 }

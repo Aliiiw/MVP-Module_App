@@ -10,7 +10,7 @@ interface ApiInterface {
     @GET("/posts")
     suspend fun getAllPosts(): Response<List<PostResponseModel>>
 
-    @GET("/{postId}")
+    @GET("/posts/{postId}")
     suspend fun getPostById(
         @Path(
             value = "postId",
